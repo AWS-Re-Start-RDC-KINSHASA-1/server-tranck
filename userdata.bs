@@ -1,0 +1,13 @@
+#!/bin/bash
+sudo yum update -y
+sudo yum -y install httpd
+sudo systemctl enable httpd
+sudo systemctl start httpd
+sudo yum install pip3 -y
+pip3 install flask
+sudo yum install git -y
+git clone https://github.com/AWS-Re-Start-RDC-KINSHASA-1/server-tranck.git
+cd /server-tranck
+sudo su
+sudo lsof -t -i :5010 | xargs kill -9
+flask run --host=0.0.0.0 --port=5010
