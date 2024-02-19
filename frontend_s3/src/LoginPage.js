@@ -1,6 +1,5 @@
 // LoginPage.js
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -16,16 +15,26 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        'YOUR_API_GATEWAY_URL', // Replace with your API Gateway URL
-        { username, password }
-      );
+      const response = await fetch('https://etn9vdirxc.execute-api.us-east-1.amazonaws.com/test/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+        mode: 'cors',
+      });
 
-      console.log('Login successful:', response.data.message);
-      // Add any additional logic for a successful login
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful
+        console.log(data.message);
+      } else {
+        // Login failed
+        console.error(data.message);
+      }
     } catch (error) {
-      console.error('Login failed:', error.response.data.message);
-      // Add any additional logic for a failed login
+      console.error('Error during login:', error);
     }
   };
 
